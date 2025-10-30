@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Check</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="app.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <header class="top">
+            <h1>Knowledge Check</h1>
+            <div id="category"></div>
+        </header>
+        
+    <main id="game">
+        <div id="start-overlay" class="overlay">
+            <button id="start-btn" class="primary">Start</button>
+        </div>
+
+        <section id="question-area" aria-live="polite">
+            <div id="question"></div>
+            <div id="answers" class="answers"></div>
+            <div id="feedback" class="feedback" aria-live="polite"></div>
+        </section>
+    </main>
+    
+    <footer class="hud">
+        <div id="timer" class="hud-item left" aria-label="Timer">10</div>
+        <div id="score" class="hud-item right" aria-label="Score">Score</div>
+    </footer>
+    </div>
+</body>
+</html>
