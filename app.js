@@ -65,7 +65,7 @@ const questions = [
     },
 ]
 
-
+let remaining = []
 let score = 0
 let countdown = 10
 let timerId = null
@@ -81,7 +81,8 @@ let acceptingAnswers = false
 
 //---------------------------- Cached Element References -----------------------------
 
-
+const elTimer = document.getElementById("timer");
+const elScore = document.getElementById("score")
 
 
 
@@ -89,8 +90,31 @@ let acceptingAnswers = false
 //---------------------------- Functions ----------------------------------------------
 
 const shuffleQuestions = questions.slice().sort(() => Math.random() - 0.5)
-let remaining = questions.slice().sort(() => Math.random())
+remaining = questions.slice().sort(() => Math.random() - 0.5)
 const currentQuestion = remaining.pop()
+
+function setTimerDisplay(){
+    elTimer.textContent = String(value)
+}
+
+function setScoreDisplay(value) {
+    elScore.textContent = `Score: ${value}`
+}
+
+function handleAnswer(selectedOption, correctAnswer) {
+    if (!acceptingAnswers) return
+    acceptingAnswers= false
+    stopTimer()
+
+    if (selectedOption === correctAnswer){
+        Audio.bell()
+        score += 1
+    } else {
+        Audio.buzzer()
+    }
+
+    onAnswerProcessed()
+}
 
 
 //---------------------------- Event Listeners ----------------------------------------
