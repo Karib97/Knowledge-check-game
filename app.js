@@ -83,15 +83,18 @@ let acceptingAnswers = false
 
 const elTimer = document.getElementById("timer");
 const elScore = document.getElementById("score")
+const elCategory = document.getElementById("category")
+const elfeedback = document.getElementById("feedback")
+const elAnswers = document.getElementById("answers")
 
 
 
 
 //---------------------------- Functions ----------------------------------------------
 
-const shuffleQuestions = questions.slice().sort(() => Math.random() - 0.5)
-remaining = questions.slice().sort(() => Math.random() - 0.5)
-const currentQuestion = remaining.pop()
+// const shuffleQuestions = questions.slice().sort(() => Math.random() - 0.5)
+// remaining = questions.slice().sort(() => Math.random() - 0.5)
+// const currentQuestion = remaining.pop()
 
 function setTimerDisplay(){
     elTimer.textContent = String(value)
@@ -99,6 +102,37 @@ function setTimerDisplay(){
 
 function setScoreDisplay(value) {
     elScore.textContent = `Score: ${value}`
+}
+
+function createTimer(durationSeconds, onExpireSound = Audio.buzzer) {
+    let timerId = null
+    let countdown = durationSeconds
+
+    function start() {
+        stop()
+        countdown = durationSeconds
+        setTimerDisplay(countdown)
+        timerId = setInterval(()=>{
+            countdown-=1
+            setTimerDisplay(countdown)
+            if(countdown <= 0){
+                stop()
+                if(typeof onExpireSound === 'function'){
+                    onExpireSound()
+                }
+                if(typeof onTimeExpired === 'function'){
+                    onTimeExpired()
+                }
+            }
+        }, 1000)
+    }
+    function stop(){
+        if(timerId !== null){
+            clearInterval(timerId)
+            timerId = null
+        }
+    }
+    return {start, stop}
 }
 
 function handleAnswer(selectedOption, correctAnswer) {
@@ -115,6 +149,52 @@ function handleAnswer(selectedOption, correctAnswer) {
 
     onAnswerProcessed()
 }
+
+
+function onTimeExpired() {
+    if (!current) return
+    acceptingAnswers = false
+    markCorrectWrong(null)
+    elfeedback.textContent= "Time's Up!"
+    Audio.buzzer()
+    setTimeout(nextQuestion, 10000)
+}
+
+
+function markCorrectWrong(selectedText) {
+    const buttons = Array.from(document.querySelectorAll(".answer"))
+    buttons.forEach(btn => {
+        const text = btn.dataset.value
+        if (text === current.correct){
+            btn.classList.add("correct")
+        } else if (selectedText && text === selectedText){
+            btn.classList.add("Wrong")
+        }
+        btn.disabled = true
+    })
+}
+
+function renderQuestion(q){
+    elCategory.textContent = q.category
+    elQuestion.textContent = q.prompt
+
+    const options = shuffle(q.options)
+    elAnswers.innerHTML = ""
+    options.forEach(opt => {
+        const btn = document.createElement("button")
+        btn.className = "answer"
+        btn.dataset.value = opt
+        btn.textContent = opt
+        btn.addEventListener("click", () => handleAnswer(opt))
+        elAnswers.appendChild(btn)
+    })
+
+    elfeedback.textContent= ""
+}
+
+
+
+
 
 
 //---------------------------- Event Listeners ----------------------------------------
