@@ -70,7 +70,8 @@ let score = 0
 let countdown = 10
 let timerId = null
 let acceptingAnswers = false
-
+let timer = null
+let current = null
 
 
 //----------------------------- Variables --------------------------------------------
@@ -118,6 +119,17 @@ startButtons.forEach(button => {
             start()
     })
 })
+
+function setTimerDisplay(value) {
+    elTimer.textContent= String(value)
+}
+
+function start() {
+    score=0
+    setScoreDisplay(score)
+    nextQuestion()
+}
+
 
 
 
@@ -167,6 +179,13 @@ function handleAnswer(selectedOption, correctAnswer) {
     onAnswerProcessed()
 }
 
+function onAnswerProcessed() {
+    markCorrectWrong(current.correct)
+    setScoreDispaly(score)
+    setTimeout(nextQuestion, 1000)
+}
+
+
 
 function onTimeExpired() {
     if (!current) return
@@ -185,14 +204,38 @@ function markCorrectWrong(selectedText) {
         if (text === current.correct){
             btn.classList.add("correct")
         } else if (selectedText && text === selectedText){
-            btn.classList.add("Wrong")
+            btn.classList.add("wrong")
         }
         btn.disabled = true
     })
 }
 
 
+function nextQuestion() {
+    elfeedback.textContent=""
+    elAnswers.innerHTML=""
 
+    if (remaining.length === 0) {
+        elfeedback.textContent = "Game Over"
+        return
+    }
+
+    current = remaining.pop()
+    document.getElementById("question").textContent = current.prompt
+
+    current.options.forEach(option => {
+        const btn = document.createElement("button")
+        btn.className = "answer"
+        btn.textContent = option
+        btn.dataset.value = option
+        btn.addEventListener("click", () => handleAnswer(option, current.correct))
+        elAnswers.appendChild(btn)
+    })
+
+    acceptingAnswers = true
+    timer = createTimer(10, Audio.buzzer)
+    timer.start()
+}
 
 
 
