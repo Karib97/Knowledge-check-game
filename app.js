@@ -86,6 +86,7 @@ const elScore = document.getElementById("score")
 const elCategory = document.getElementById("category")
 const elfeedback = document.getElementById("feedback")
 const elAnswers = document.getElementById("answers")
+const startButtons =document.querySelectorAll('.start-btn')
 
 
 
@@ -103,6 +104,22 @@ function setTimerDisplay(){
 function setScoreDisplay(value) {
     elScore.textContent = `Score: ${value}`
 }
+
+startButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const selectedCategory = button.dataset.category
+        elCategory.textContent = selectedCategory
+
+        //filter & sort
+        remaining = questions
+            .filter(q => q.category === selectedCategory)
+            .sort(() => Math.random() - 0.5)
+
+            start()
+    })
+})
+
+
 
 function createTimer(durationSeconds, onExpireSound = Audio.buzzer) {
     let timerId = null
@@ -174,23 +191,7 @@ function markCorrectWrong(selectedText) {
     })
 }
 
-function renderQuestion(q){
-    elCategory.textContent = q.category
-    elQuestion.textContent = q.prompt
 
-    const options = shuffle(q.options)
-    elAnswers.innerHTML = ""
-    options.forEach(opt => {
-        const btn = document.createElement("button")
-        btn.className = "answer"
-        btn.dataset.value = opt
-        btn.textContent = opt
-        btn.addEventListener("click", () => handleAnswer(opt))
-        elAnswers.appendChild(btn)
-    })
-
-    elfeedback.textContent= ""
-}
 
 
 
