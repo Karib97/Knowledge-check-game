@@ -78,8 +78,8 @@ let selectedOption = null
 //----------------------------- Variables --------------------------------------------
 
 const Sounds = {
-    bell: ()=> new Audio('bell.mp3').play(),
-    buzzer: ()=> new Audio('buzzer.mp3').play()
+    bell: ()=> new Audio('https://raw.githubusercontent.com/Karib97/Knowledge-check-game/main/sounds/bell.mp3').play(),
+    buzzer: ()=> new Audio('https://raw.githubusercontent.com/Karib97/Knowledge-check-game/main/sounds/buzzer.mp3').play()
 }
 
 
@@ -212,7 +212,7 @@ function handleAnswer(selectedOption) {
 
     markCorrectWrong(selectedOption)
     setScoreDisplay(score)
-    setTimeout(nextQuestion, 1000)
+    setTimeout(nextQuestion, 3000)
     
 }
 
@@ -249,35 +249,6 @@ function markCorrectWrong(selectedText) {
         btn.disabled = true
     })
 }
-
-
-// function nextQuestion() {
-//     elfeedback.textContent=""
-//     elAnswers.innerHTML=""
-
-//     if (remaining.length === 0) {
-//         elfeedback.textContent = "Game Over"
-//         return
-//     }
-
-//     current = remaining.pop()
-//     document.getElementById("question").textContent = current.prompt
-
-//     current.options.forEach(option => {
-//         const btn = document.createElement("button")
-//         btn.className = "answer"
-//         btn.textContent = option
-//         btn.dataset.value = option
-//         btn.addEventListener("click", () => handleAnswer(selectedOption, current.correct))
-//         elAnswers.appendChild(btn)
-//     })
-
-//     acceptingAnswers = true
-//     timer = createTimer(10, Audio.buzzer)
-//     timer.start()
-// }
-
-
 
 
 
