@@ -123,7 +123,7 @@ startButtons.forEach(button => {
 
 
 function setTimerDisplay(value) {
-    elTimer.textContent= String(value)
+    elTimer.textContent= `Timer: ${value}`
 }
 
 function start() {
