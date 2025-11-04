@@ -77,9 +77,9 @@ let selectedOption = null
 
 //----------------------------- Variables --------------------------------------------
 
-const Audio = {
-    bell: ()=>  Audio('bell.mp3').play(),
-    buzzer: ()=> Audio('buzzer.mp3').play()
+const Sounds = {
+    bell: ()=> new Audio('bell.mp3').play(),
+    buzzer: ()=> new Audio('buzzer.mp3').play()
 }
 
 
@@ -122,6 +122,8 @@ startButtons.forEach(button => {
     })
 })
 
+
+
 function setTimerDisplay(value) {
     elTimer.textContent= String(value)
 }
@@ -135,7 +137,7 @@ function start() {
 
 
 
-function createTimer(durationSeconds, onExpireSound = Audio.buzzer) {
+function createTimer(durationSeconds, onExpireSound = Sounds.buzzer) {
     let timerId = null
     let countdown = durationSeconds
 
@@ -166,18 +168,46 @@ function createTimer(durationSeconds, onExpireSound = Audio.buzzer) {
     return {start, stop}
 }
 
-function handleAnswer(selectedOption, correctAnswer) {
-    if (!acceptingAnswers) return
+
+function nextQuestion() {
+    elfeedback.textContent=""
+    elAnswers.innerHTML=""
+
+    if (remaining.length === 0) {
+        elfeedback.textContent = "Game Over"
+        return
+    }
+
+    current = remaining.pop()
+    document.getElementById("question").textContent = current.prompt
+
+    current.options.forEach(option => {
+        const btn = document.createElement("button")
+        btn.className = "answer"
+        btn.textContent = option
+        btn.dataset.value = option
+        btn.addEventListener("click", () => handleAnswer(option))
+        elAnswers.appendChild(btn)
+    })
+
+    acceptingAnswers = true
+    timer = createTimer(10, Sounds.buzzer)
+    timer.start()
+}
+
+
+function handleAnswer(selectedOption) {
+    if (!acceptingAnswers || !timer) return
     acceptingAnswers= false
     timer.stop()
 
-    if (selectedOption === correctAnswer){
-        Audio.bell()
+    if (selectedOption === current.correct){
+        Sounds.bell()
         score += 1
         elfeedback.textContent = "Correct"
     } else {
-        Audio.buzzer()
-        elfeedback.textContent= `The Correct answer was ${current.correct}`
+        Sounds.buzzer()
+        elfeedback.textContent= `The correct answer was ${current.correct}`
     }
 
     markCorrectWrong(selectedOption)
@@ -202,7 +232,7 @@ function onTimeExpired() {
     acceptingAnswers = false
     markCorrectWrong(null)
     elfeedback.textContent= "Time's Up!"
-    Audio.buzzer()
+    Sounds.buzzer()
     setTimeout(nextQuestion, 1000)
 }
 
@@ -221,31 +251,31 @@ function markCorrectWrong(selectedText) {
 }
 
 
-function nextQuestion() {
-    elfeedback.textContent=""
-    elAnswers.innerHTML=""
+// function nextQuestion() {
+//     elfeedback.textContent=""
+//     elAnswers.innerHTML=""
 
-    if (remaining.length === 0) {
-        elfeedback.textContent = "Game Over"
-        return
-    }
+//     if (remaining.length === 0) {
+//         elfeedback.textContent = "Game Over"
+//         return
+//     }
 
-    current = remaining.pop()
-    document.getElementById("question").textContent = current.prompt
+//     current = remaining.pop()
+//     document.getElementById("question").textContent = current.prompt
 
-    current.options.forEach(option => {
-        const btn = document.createElement("button")
-        btn.className = "answer"
-        btn.textContent = option
-        btn.dataset.value = option
-        btn.addEventListener("click", () => handleAnswer(option, current.correct))
-        elAnswers.appendChild(btn)
-    })
+//     current.options.forEach(option => {
+//         const btn = document.createElement("button")
+//         btn.className = "answer"
+//         btn.textContent = option
+//         btn.dataset.value = option
+//         btn.addEventListener("click", () => handleAnswer(selectedOption, current.correct))
+//         elAnswers.appendChild(btn)
+//     })
 
-    acceptingAnswers = true
-    timer = createTimer(10, Audio.buzzer)
-    timer.start()
-}
+//     acceptingAnswers = true
+//     timer = createTimer(10, Audio.buzzer)
+//     timer.start()
+// }
 
 
 
