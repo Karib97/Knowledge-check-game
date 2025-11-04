@@ -4,3 +4,4 @@ Here is the link the link to to the game to play: https://karib97.github.io/Know
 To play: Select a category and answer the questions. To win you must score at least 4 points. 
 
 To build this game i used HTML, CSS, and JavaScript
+<img width="921" height="907" alt="image" src="https://github.com/user-attachments/assets/cb49690b-0d7a-408d-9fc2-608f76dba6c9" />
