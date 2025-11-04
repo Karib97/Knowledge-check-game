@@ -72,13 +72,14 @@ let timerId = null
 let acceptingAnswers = false
 let timer = null
 let current = null
+let selectedOption = null
 
 
 //----------------------------- Variables --------------------------------------------
 
 const Audio = {
-    bell: ()=> new Audio('bell.mp3').play(),
-    buzzer: ()=> new Audio('buzzer.mp3').play()
+    bell: ()=>  Audio('bell.mp3').play(),
+    buzzer: ()=> Audio('buzzer.mp3').play()
 }
 
 
@@ -86,7 +87,7 @@ const Audio = {
 
 //---------------------------- Cached Element References -----------------------------
 
-const elTimer = document.getElementById("timer");
+const elTimer = document.getElementById("timer")
 const elScore = document.getElementById("score")
 const elCategory = document.getElementById("category")
 const elfeedback = document.getElementById("feedback")
@@ -176,17 +177,23 @@ function handleAnswer(selectedOption, correctAnswer) {
         elfeedback.textContent = "Correct"
     } else {
         Audio.buzzer()
-        elfeedback.textContent= "The Correct answer was ${current.correct}"
+        elfeedback.textContent= `The Correct answer was ${current.correct}`
     }
 
-    onAnswerProcessed(selectedOption)
-}
-
-function onAnswerProcessed(selectedOption) {
     markCorrectWrong(selectedOption)
     setScoreDisplay(score)
     setTimeout(nextQuestion, 1000)
+    
 }
+
+
+
+
+// function onAnswerProcessed(selectedOption) {
+//     markCorrectWrong(selectedOption)
+//     setScoreDisplay(score)
+//     setTimeout(nextQuestion, 1000)
+// }
 
 
 
@@ -196,7 +203,7 @@ function onTimeExpired() {
     markCorrectWrong(null)
     elfeedback.textContent= "Time's Up!"
     Audio.buzzer()
-    setTimeout(nextQuestion, 10000)
+    setTimeout(nextQuestion, 1000)
 }
 
 
