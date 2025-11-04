@@ -22,15 +22,15 @@ const questions = [
     },
     {
         category: "State Capitals",
-        prompt:'What is the capital of West Virgina',
+        prompt:'What is the capital of West Virginia',
         correct: 'Charleston',
         options: ['Huntington', 'Morgantown', 'Wheeling', 'Charleston']
     },
     {
         category: "State Capitals",
-        prompt:'What is the capital of Conneticut',
+        prompt:'What is the capital of Connecticut',
         correct: 'Hartford',
-        options: ['hartford', 'New Haven', 'Bridgeport', 'Stamford']
+        options: ['Hartford', 'New Haven', 'Bridgeport', 'Stamford']
     },
     // National Animals
     {
@@ -59,7 +59,7 @@ const questions = [
     },
     {
         category: 'National Animals',
-        prompt: 'What is the National Animal of Democrtaic Republic of Congo?',
+        prompt: 'What is the National Animal of the Democratic Republic of the Congo?',
         correct: 'Okapi',
         options: ['Hippopotamus', 'Okapi', 'Gorilla', 'Zebra']
     },
@@ -76,6 +76,10 @@ let current = null
 
 //----------------------------- Variables --------------------------------------------
 
+const Audio = {
+    bell: ()=> new Audio('bell.mp3').play(),
+    buzzer: ()=> new Audio('buzzer.mp3').play()
+}
 
 
 
@@ -88,7 +92,7 @@ const elCategory = document.getElementById("category")
 const elfeedback = document.getElementById("feedback")
 const elAnswers = document.getElementById("answers")
 const startButtons =document.querySelectorAll('.start-btn')
-
+const elQuestion = document.getElementById("question")
 
 
 
@@ -98,9 +102,6 @@ const startButtons =document.querySelectorAll('.start-btn')
 // remaining = questions.slice().sort(() => Math.random() - 0.5)
 // const currentQuestion = remaining.pop()
 
-function setTimerDisplay(){
-    elTimer.textContent = String(value)
-}
 
 function setScoreDisplay(value) {
     elScore.textContent = `Score: ${value}`
@@ -167,21 +168,23 @@ function createTimer(durationSeconds, onExpireSound = Audio.buzzer) {
 function handleAnswer(selectedOption, correctAnswer) {
     if (!acceptingAnswers) return
     acceptingAnswers= false
-    stopTimer()
+    timer.stop()
 
     if (selectedOption === correctAnswer){
         Audio.bell()
         score += 1
+        elfeedback.textContent = "Correct"
     } else {
         Audio.buzzer()
+        elfeedback.textContent= "The Correct answer was ${current.correct}"
     }
 
-    onAnswerProcessed()
+    onAnswerProcessed(selectedOption)
 }
 
-function onAnswerProcessed() {
-    markCorrectWrong(current.correct)
-    setScoreDispaly(score)
+function onAnswerProcessed(selectedOption) {
+    markCorrectWrong(selectedOption)
+    setScoreDisplay(score)
     setTimeout(nextQuestion, 1000)
 }
 
@@ -203,7 +206,7 @@ function markCorrectWrong(selectedText) {
         const text = btn.dataset.value
         if (text === current.correct){
             btn.classList.add("correct")
-        } else if (selectedText && text === selectedText){
+        } else if (text === selectedText && text !== current.correct){
             btn.classList.add("wrong")
         }
         btn.disabled = true
