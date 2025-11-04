@@ -148,9 +148,6 @@ function createTimer(durationSeconds, onExpireSound = Sounds.buzzer) {
             setTimerDisplay(countdown)
             if(countdown <= 0){
                 stop()
-                if(typeof onExpireSound === 'function'){
-                    onExpireSound()
-                }
                 if(typeof onTimeExpired === 'function'){
                     onTimeExpired()
                 }
