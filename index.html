@@ -16,7 +16,8 @@
         </header>
         
     <main id="game">
-        <div id="start-overlay" class="overlay">
+        <div id="start-overlay" class="button-row">
+            <h2>Select a category to begin!</h2>
             <button class="start-btn" data-category="State Capitals">State Capitals</button>
             <button class="start-btn" data-category="National Animals">National Animals</button>
         </div>
@@ -24,12 +25,13 @@
         <section id="question-area" aria-live="polite">
             <div id="question"></div>
             <div id="answers" class="answers"></div>
-            <div id="feedback" class="feedback"></div>
+            
         </section>
     </main>
     
     <footer class="hud">
         <div id="timer" class="hud-item left" aria-label="Timer">10</div>
+        <div id="feedback" class="feedback"></div>
         <div id="score" class="hud-item right" aria-label="Score">Score</div>
     </footer>
     </div>

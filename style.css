@@ -4,6 +4,7 @@ html, body {
     background-color:rgb(166, 245, 166);
     display: flex;
     justify-content: center;
+    padding: 5px;
 }
 
 #app{
@@ -22,6 +23,7 @@ html, body {
     justify-content: center;
     align-items: center;
     flex: 1;
+    flex-direction: column;
 }
 
 #score {
@@ -32,7 +34,7 @@ html, body {
 #feedback {
     min-height: 22px;
     margin-top: 15px;
-    font-size: 15px;
+    font-size: 30px;
 }
 
 
@@ -69,7 +71,8 @@ button {
 #question-area{
     display: flex;
     background: lightsalmon;
-    border: 2px ;
+    border: 2px orangered;
+    padding: 15px; 
 }
 
 .answers{
@@ -96,4 +99,8 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+h2 {
+    text-align: center;
 }

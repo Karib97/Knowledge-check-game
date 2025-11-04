@@ -99,9 +99,7 @@ const elQuestion = document.getElementById("question")
 
 //---------------------------- Functions ----------------------------------------------
 
-// const shuffleQuestions = questions.slice().sort(() => Math.random() - 0.5)
-// remaining = questions.slice().sort(() => Math.random() - 0.5)
-// const currentQuestion = remaining.pop()
+
 
 
 function setScoreDisplay(value) {
@@ -113,7 +111,7 @@ startButtons.forEach(button => {
         const selectedCategory = button.dataset.category
         elCategory.textContent = selectedCategory
 
-        //filter & sort
+        
         remaining = questions
             .filter(q => q.category === selectedCategory)
             .sort(() => Math.random() - 0.5)
@@ -174,8 +172,11 @@ function nextQuestion() {
     elAnswers.innerHTML=""
 
     if (remaining.length === 0) {
-        elfeedback.textContent = "Game Over"
-        return
+       if (score >= 4) {
+        elfeedback.textContent = "You Win"
+       } else {
+        elfeedback.textContent = "You Lost"
+       }
     }
 
     current = remaining.pop()
@@ -215,15 +216,6 @@ function handleAnswer(selectedOption) {
     setTimeout(nextQuestion, 3000)
     
 }
-
-
-
-
-// function onAnswerProcessed(selectedOption) {
-//     markCorrectWrong(selectedOption)
-//     setScoreDisplay(score)
-//     setTimeout(nextQuestion, 1000)
-// }
 
 
 
